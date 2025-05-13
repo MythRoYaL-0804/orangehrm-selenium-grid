@@ -14,6 +14,9 @@ __pycache__/
 allure-report/
 allure-results/
 
+# Không track thư mục ảnh chụp màn hình
+screenshot/
+
 # VSCode or IDE
 .vscode/
 .idea/
