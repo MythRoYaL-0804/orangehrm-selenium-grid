@@ -1,0 +1,60 @@
+version: '3'
+services:
+  selenium-hub:
+    image: selenium/hub:4.18.1
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+  
+  chrome-node:
+    image: selenium/node-chrome:4.18.1
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=5
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_GRID_URL=http://selenium-hub:4444
+    ports:
+      - "5900:5900"
+    volumes:
+      - /dev/shm:/dev/shm
+    restart: unless-stopped
+
+  edge-node:
+    image: selenium/node-edge:4.18.1
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=5
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "5901:5900"
+    volumes:
+      - /dev/shm:/dev/shm
+    restart: unless-stopped
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - selenium-hub
+      - chrome-node
+      - edge-node
+    environment:
+      - SELENIUM_HUB_HOST=selenium-hub
+      - SELENIUM_HUB_PORT=4444
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app

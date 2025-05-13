@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+.env.*
+
+# Pytest
+.pytest_cache/
+
+# Allure Report
+allure-report/
+allure-results/
+
+# VSCode or IDE
+.vscode/
+.idea/
+
+# Docker
+*.log
+*.pid
+
+# OS
+.DS_Store
+Thumbs.db

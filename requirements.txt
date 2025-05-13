@@ -1,0 +1,21 @@
+# Core testing
+selenium==4.18.1
+pytest==8.0.2
+
+# HTML report
+pytest-html==4.1.1
+
+# Parallel testing
+pytest-xdist==3.5.0
+
+#.env support
+python-dotenv==1.0.1
+
+# MailSlurp client (email test)
+mailslurp-client
+
+# (Optional) Logging đẹp
+pytest-sugar==1.0.0
+
+# (Optional) Allure report support
+allure-pytest==2.13.2
